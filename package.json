@@ -2,9 +2,9 @@
   "name": "upload-to-s3-action",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "build": "ncc build index.js -o dist --license licenses.txt"
+    "build": "ncc build src/index.js -o dist --license licenses.txt"
   },
   "keywords": [],
   "author": "",
