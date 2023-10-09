@@ -1,0 +1,26 @@
+name: 'Upload to S3'
+description: 'Upload files to an AWS S3 bucket'
+author: 'Raza Mahmood'
+inputs:
+  src:
+    description: 'The path to the file(s) to upload'
+    required: true
+  dest:
+    description: 'The destination path in the S3 bucket'
+    required: true
+  bucket:
+    description: 'The name of the S3 bucket'
+    required: true
+  access_key:
+    description: 'The AWS access key'
+    required: true
+  secret_key:
+    description: 'The AWS secret key'
+    required: true
+  clear_dest:
+    description: 'Whether to clear the destination path before uploading'
+    required: false
+    default: 'false'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
