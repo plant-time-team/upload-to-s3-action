@@ -10,16 +10,10 @@
 import core from '@actions/core';
 import { glob } from 'glob';
 
-const source = core.getInput('source');
-//const destination = core.getInput('destination');
-const ignore = core.getInput('ignore');
-//const bucketName = core.getInput('bucket');
-//const accessKey = core.getInput('access_key');
-//const secretKey = core.getInput('secret_key');
-//const region = core.getInput('region');
-
 try {
   // Get all the files and folders matching the glob pattern
+  const source = core.getInput('source');
+  const ignore = core.getInput('ignore');
 
   let files = await glob(source, { ignore, signal: AbortSignal.timeout(10000), withFileTypes: true });
 
