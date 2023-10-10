@@ -7,10 +7,10 @@
   GetObjectCommand,
 } from '@aws-sdk/client-s3';*/
 
-import core from '@actions/core';
-import { glob } from 'glob';
+const core = require('@actions/core');
+const glob = require('glob');
 
-try {
+async function main() {
   // Get all the files and folders matching the glob pattern
   const source = core.getInput('source');
   const ignore = core.getInput('ignore');
@@ -20,6 +20,9 @@ try {
   // Filter out directories and map to their full path
   files = files.filter((file) => !file.isDirectory()).map((file) => file.fullpath());
 
+  // Log which files will be uploaded
+  core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);
+
   // Create a new S3 client
 
   // Check if the bucket exists
@@ -27,10 +30,9 @@ try {
   // If the user specified that the destination should be cleared, delete all the files in the bucket at the destination first
 
   // Upload each file to the bucket
+}
 
-  // Log which files were uploaded
-  core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);
-} catch (err) {
+main().catch((err) => {
   core.error(err);
   core.setFailed(err.message);
-}
+});
