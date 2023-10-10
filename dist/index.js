@@ -33844,7 +33844,7 @@ async function main() {
   const source = core.getInput('source');
   const ignore = core.getInput('ignore');
 
-  let files = await glob(source, { ignore, signal: AbortSignal.timeout(10000), withFileTypes: true });
+  let files = await glob.glob(source, { ignore, signal: AbortSignal.timeout(10000), withFileTypes: true });
 
   // Filter out directories and map to their full path
   files = files.filter((file) => !file.isDirectory()).map((file) => file.fullpath());
