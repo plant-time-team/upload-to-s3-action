@@ -29,7 +29,7 @@ try {
   // Upload each file to the bucket
 
   // Log which files were uploaded
-  core.info(`Uploading ${files.length} files to ${BUCKET_NAME}:\n${files.join('\n')}`);
+  core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);
 } catch (err) {
   core.error(err);
   core.setFailed(err.message);
