@@ -24,7 +24,7 @@ inputs:
   secret_key:
     description: 'The AWS secret access key'
     required: true
-  clear_destionation:
+  clear_destination:
     description: 'Whether to clear the destination path before uploading'
     required: false
     default: 'false'
