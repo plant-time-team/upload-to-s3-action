@@ -9,6 +9,7 @@
 
 const core = require('@actions/core');
 const glob = require('@actions/glob');
+const fs = require('fs');
 
 async function main() {
   // Get all the files and folders matching the glob pattern
@@ -18,7 +19,7 @@ async function main() {
   let files = await globber.glob();
 
   // Filter out directories and map to their full path
-  // files = files.filter((file) => !file.endsWith('/'))
+  files = files.filter((file) => fs.lstatSync(file).isFile());
 
   // Log which files will be uploaded
   core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);

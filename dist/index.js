@@ -28295,6 +28295,7 @@ var __webpack_exports__ = {};
 
 const core = __nccwpck_require__(6024);
 const glob = __nccwpck_require__(2723);
+const fs = __nccwpck_require__(7147);
 
 async function main() {
   // Get all the files and folders matching the glob pattern
@@ -28304,7 +28305,7 @@ async function main() {
   let files = await globber.glob();
 
   // Filter out directories and map to their full path
-  // files = files.filter((file) => !file.endsWith('/'))
+  files = files.filter((file) => fs.lstatSync(file).isFile());
 
   // Log which files will be uploaded
   core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);
