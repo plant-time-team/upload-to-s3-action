@@ -6,7 +6,7 @@ inputs:
     description: 'A glob pattern of the files to upload'
     required: true
   destination:
-    description: 'The destination path in the S3 bucket'
+    description: 'The destination prefix in the S3 bucket (leave blank for root)'
     required: true
   region:
     description: 'The AWS region'
@@ -21,7 +21,7 @@ inputs:
     description: 'The AWS secret access key'
     required: true
   clear_destination:
-    description: 'Whether to clear the destination path before uploading'
+    description: 'Whether to delete all the files that begin with the destination prefix before uploading'
     required: false
     default: 'false'
 runs:
