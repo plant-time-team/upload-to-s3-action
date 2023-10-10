@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build src/index.js -o dist --license licenses.txt"
+    "build": "ncc build src/index.js -o dist --license licenses.txt",
+    "watch": "ncc build src/index.js -o dist --watch --license licenses.txt"
   },
   "keywords": [],
   "author": "",
