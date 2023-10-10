@@ -49,49 +49,27 @@ async function main() {
 
   // Check if the bucket exists
   const BUCKET_NAME = core.getInput('bucket');
+  core.info(`Verifying specified bucket exists.`);
 
-  try {
-    await s3.send(new HeadBucketCommand({ Bucket: BUCKET_NAME }));
-  } catch (err) {
-    core.error(err);
-
-    switch (err.name) {
-      case 'NoSuchBucket':
-        core.setFailed(`${BUCKET_NAME} is not a valid S3 bucket.`);
-        break;
-      case 'Forbidden':
-        core.setFailed(`Not authorized to modify S3 bucket ${BUCKET_NAME}.`);
-        break;
-      default:
-        core.setFailed(err.message);
-        break;
-    }
-
-    return;
-  }
+  await s3.send(new HeadBucketCommand({ Bucket: BUCKET_NAME }));
 
   // If the user specified that the destination should be cleared, delete all the files in the bucket at the destination first
   const DESTINATION = core.getInput('destination');
   const CLEAR_DESTINATION = core.getInput('clear_destination').toLowerCase().trim() === 'true';
 
   if (CLEAR_DESTINATION) {
-    try {
-      const objects = await s3.send(new ListObjectsV2Command({ Bucket: BUCKET_NAME, Prefix: DESTINATION }));
+    core.info(`Deleting all files with destination prefix ${DESTINATION}`);
 
-      if (objects.Contents.length > 0) {
-        const toDelete = objects.Contents.map(({ Key }) => ({ Key }));
-        await s3.send(new DeleteObjectsCommand({ Bucket: BUCKET_NAME, Delete: { Objects: toDelete } }));
-        core.info(`Deleted ${toDelete.length} files from ${BUCKET_NAME}/${DESTINATION}`);
-      }
-    } catch (err) {
-      core.error(err);
-      core.setFailed(`Failed to clear destination: ${err.message}`);
-      return;
+    const objects = await s3.send(new ListObjectsV2Command({ Bucket: BUCKET_NAME, Prefix: DESTINATION }));
+
+    if (objects.Contents.length > 0) {
+      const toDelete = objects.Contents.map(({ Key }) => ({ Key }));
+      await s3.send(new DeleteObjectsCommand({ Bucket: BUCKET_NAME, Delete: { Objects: toDelete } }));
+      core.info(`Deleted ${toDelete.length} files: ${toDelete.map(({ Key }) => Key).join(', ')}`);
     }
   }
 
   // Upload each file to the bucket
-
 }
 
 main().catch((err) => {
