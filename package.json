@@ -6,7 +6,6 @@
   "scripts": {
     "build": "ncc build src/index.js -o dist --license licenses.txt -m"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
