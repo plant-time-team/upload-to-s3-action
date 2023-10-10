@@ -10,6 +10,7 @@
 const core = require('@actions/core');
 const glob = require('@actions/glob');
 const fs = require('fs');
+const path = require('path');
 
 async function main() {
   // Get all the files and folders matching the glob pattern
@@ -20,6 +21,9 @@ async function main() {
 
   // Filter out directories and map to their full path
   files = files.filter((file) => fs.lstatSync(file).isFile());
+
+  // Convert to relative paths
+  files = files.map((file) => path.relative(process.cwd(), file));
 
   // Log which files will be uploaded
   core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);
