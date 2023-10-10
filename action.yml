@@ -8,10 +8,6 @@ inputs:
   destination:
     description: 'The destination path in the S3 bucket'
     required: true
-  ignore:
-    description: 'A glob pattern of files to ignore in the source pattern'
-    required: false
-    default: ''
   region:
     description: 'The AWS region'
     required: true

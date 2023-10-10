@@ -8,17 +8,17 @@
 } from '@aws-sdk/client-s3';*/
 
 const core = require('@actions/core');
-const glob = require('glob');
+const glob = require('@actions/glob');
 
 async function main() {
   // Get all the files and folders matching the glob pattern
   const source = core.getInput('source');
-  const ignore = core.getInput('ignore');
+  const globber = await glob.create(source);
 
-  let files = await glob.glob(source, { ignore, signal: AbortSignal.timeout(10000), withFileTypes: true });
+  let files = await globber.glob();
 
   // Filter out directories and map to their full path
-  files = files.filter((file) => !file.isDirectory()).map((file) => file.fullpath());
+  // files = files.filter((file) => !file.endsWith('/'))
 
   // Log which files will be uploaded
   core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);
