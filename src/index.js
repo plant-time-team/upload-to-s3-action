@@ -58,11 +58,11 @@ async function main() {
   const CLEAR_DESTINATION = core.getInput('clear_destination').toLowerCase().trim() === 'true';
 
   if (CLEAR_DESTINATION) {
-    core.info(`Deleting all files with destination prefix ${DESTINATION}`);
+    core.info(`Deleting all files with destination prefix: "${DESTINATION}"`);
 
     const objects = await s3.send(new ListObjectsV2Command({ Bucket: BUCKET_NAME, Prefix: DESTINATION }));
 
-    if (objects.Contents.length > 0) {
+    if (objects?.Contents?.length > 0) {
       const toDelete = objects.Contents.map(({ Key }) => ({ Key }));
       await s3.send(new DeleteObjectsCommand({ Bucket: BUCKET_NAME, Delete: { Objects: toDelete } }));
       core.info(`Deleted ${toDelete.length} files:\n ${toDelete.map(({ Key }) => Key).join('\n')}`);
