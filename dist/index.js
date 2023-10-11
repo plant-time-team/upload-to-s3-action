@@ -67086,7 +67086,7 @@ async function main() {
   files = files.map((file) => path.relative(process.cwd(), file));
 
   // Log which files will be uploaded
-  core.info(`Uploading ${files.length} files:\n${files.join('\n')}`);
+  core.info(`Uploading ${files.length} files:\n ${files.join('\n')}`);
 
   // Create a new S3 client
   const REGION = core.getInput('region');
@@ -67118,11 +67118,25 @@ async function main() {
     if (objects.Contents.length > 0) {
       const toDelete = objects.Contents.map(({ Key }) => ({ Key }));
       await s3.send(new DeleteObjectsCommand({ Bucket: BUCKET_NAME, Delete: { Objects: toDelete } }));
-      core.info(`Deleted ${toDelete.length} files: ${toDelete.map(({ Key }) => Key).join(', ')}`);
+      core.info(`Deleted ${toDelete.length} files:\n ${toDelete.map(({ Key }) => Key).join('\n')}`);
+    } else {
+      core.info(`No files to delete.`);
     }
   }
 
   // Upload each file to the bucket
+  core.info(`Uploading files...`);
+
+  const promises = files.map(async (file) => {
+    const key = path.join(DESTINATION, file);
+    const content = fs.readFileSync(file);
+
+    await s3.send(new PutObjectCommand({ Bucket: BUCKET_NAME, Key: key, Body: content }));
+
+    core.info(`Uploaded ${file} to ${key}`);
+  });
+
+  await Promise.all(promises);
 }
 
 main().catch((err) => {
