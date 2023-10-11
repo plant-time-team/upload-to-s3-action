@@ -11,6 +11,7 @@ const core = require('@actions/core');
 const glob = require('@actions/glob');
 const fs = require('fs');
 const path = require('path');
+const mime = require('mime');
 const {
   S3Client,
   PutObjectCommand,
@@ -77,8 +78,9 @@ async function main() {
   const promises = files.map(async (file) => {
     const key = path.join(DESTINATION, file);
     const content = fs.readFileSync(file);
+    const contentType = mime.getType(path.extname(file));
 
-    await s3.send(new PutObjectCommand({ Bucket: BUCKET_NAME, Key: key, Body: content }));
+    await s3.send(new PutObjectCommand({ Bucket: BUCKET_NAME, Key: key, Body: content, ContentType: contentType }));
 
     core.info(`Uploaded ${file} to ${key}`);
   });
