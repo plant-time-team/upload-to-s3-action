@@ -1,12 +1,3 @@
-/*import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-  DeleteBucketCommand,
-  paginateListObjectsV2,
-  GetObjectCommand,
-} from '@aws-sdk/client-s3';*/
-
 const core = require('@actions/core');
 const glob = require('@actions/glob');
 const fs = require('fs');
